@@ -7,7 +7,7 @@ public abstract class BasePage {
 
     public static final String BASE_URL = "https://www.kikocosmetics.com/en-us/";
 
-    protected WebDriver driver;
+    protected  WebDriver driver;
     protected WebDriverWait webDriverWait;
 
     public BasePage(WebDriver driver, WebDriverWait webDriverWait) {
