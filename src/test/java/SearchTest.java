@@ -11,6 +11,7 @@ import java.util.List;
 
 public class SearchTest extends BaseTest {
 
+
     @Test
     public void searchForProduct() {
         SearchPage searchPage = new SearchPage(driver, webDriverWait);
@@ -38,9 +39,8 @@ public class SearchTest extends BaseTest {
 
     @Test
     public void searchForEmptyProductAnotherVersion() {
-        String initialUrl = driver.getCurrentUrl();
-
         SearchPage searchPage = new SearchPage(driver, webDriverWait);
+        String initialUrl = driver.getCurrentUrl();
         searchPage.performSearch();
         searchPage.enterSearchQuery("");
         searchPage.enter();
@@ -50,6 +50,6 @@ public class SearchTest extends BaseTest {
 
         Assert.assertEquals(initialUrl, finalUrl, "URL has not changed after searching for an empty product");
     }
-    // there is a bug because the url changed without any message.
+//     // there is a bug because the url changed without any message.
 
 }

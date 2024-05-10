@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SearchPage extends BasePage {
-    private WebDriverWait wait;
     public WebDriver getDriver() {
         return driver;
     }
@@ -21,7 +20,6 @@ public class SearchPage extends BasePage {
 
     public SearchPage(final WebDriver driver, final WebDriverWait wait) {
         super(driver, wait);
-        this.wait = wait;
     }
     public void performSearch() {
         WebElement enableSearchField = driver.findElement(SearchLocators.ENABLE_SEARCH_FIELD);
