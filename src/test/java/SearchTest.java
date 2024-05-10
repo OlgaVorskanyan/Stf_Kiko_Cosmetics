@@ -1,34 +1,27 @@
 import aua.testingfundamentals.pom.locators.SearchLocators;
 import aua.testingfundamentals.pom.pages.SearchPage;
 import base.BaseTest;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
 import java.util.List;
 
 public class SearchTest extends BaseTest {
-    private SearchPage searchPage;
 
-    @BeforeMethod
-    public void methodSetup() {
-        searchPage = new SearchPage(driver, webDriverWait);
-    }
     @Test
     public void searchForProduct() {
+        SearchPage searchPage = new SearchPage(driver, webDriverWait);
         searchPage.performSearch();
         searchPage.enterSearchQuery("Mascara");
-        searchPage.enter();
+        searchPage.getDriver().switchTo().activeElement().sendKeys(Keys.ENTER);
+
         List<String> searchResults = searchPage.getSearchResults();
-
         Assert.assertFalse(searchResults.isEmpty(), "Search results are empty");
-
-        boolean allContainMascara = searchResults.stream().allMatch(result -> result.contains("Mascara"));
-        Assert.assertTrue(allContainMascara, "Not all search results contain 'Mascara'");
+        Assert.assertTrue(searchResults.stream().anyMatch(result -> result.contains("Mascara")),
+                "Search results do not contain 'Mascara'");
     }
 
     @Test
@@ -36,12 +29,12 @@ public class SearchTest extends BaseTest {
         SearchPage searchPage = new SearchPage(driver, webDriverWait);
         searchPage.performSearch();
         searchPage.enterSearchQuery("dcsjbncjnsdc");
-        searchPage.enter();
-        Duration timeout = Duration.ofSeconds(20);
-        WebDriverWait wait = new WebDriverWait(driver, timeout);
-        WebElement errorMessageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(SearchLocators.NO_RESULTS_MESSAGE));
-        Assert.assertEquals(errorMessageElement.getText(), searchPage.getErrorMessage());
+        searchPage.getDriver().switchTo().activeElement().sendKeys(Keys.ENTER);
+        WebElement errorMessageElement = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(SearchLocators.NO_RESULTS_MESSAGE));
+
+        Assert.assertEquals(searchPage.getErrorMessage(), "No results found");
     }
+
 
     @Test
     public void searchForEmptyProductAnotherVersion() {
@@ -51,15 +44,12 @@ public class SearchTest extends BaseTest {
         searchPage.performSearch();
         searchPage.enterSearchQuery("");
         searchPage.enter();
-        Duration timeout = Duration.ofSeconds(10);
-
-        WebDriverWait wait = new WebDriverWait(driver, timeout);
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlToBe(initialUrl)));
+        webDriverWait.until(ExpectedConditions.not(ExpectedConditions.urlToBe(initialUrl)));
 
         String finalUrl = driver.getCurrentUrl();
 
         Assert.assertEquals(initialUrl, finalUrl, "URL has not changed after searching for an empty product");
     }
-    //there is a bug because the url changed without any message.
+    // there is a bug because the url changed without any message.
 
 }

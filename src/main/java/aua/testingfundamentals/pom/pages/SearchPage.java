@@ -13,16 +13,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SearchPage extends BasePage {
-
-    public SearchPage( WebDriver driver,  WebDriverWait wait) {
-        super(driver, wait);
+    private WebDriverWait wait;
+    public WebDriver getDriver() {
+        return driver;
     }
-    public  void performSearch() {
+
+
+    public SearchPage(final WebDriver driver, final WebDriverWait wait) {
+        super(driver, wait);
+        this.wait = wait;
+    }
+    public void performSearch() {
         WebElement enableSearchField = driver.findElement(SearchLocators.ENABLE_SEARCH_FIELD);
         enableSearchField.click();
     }
 
-    public  void enterSearchQuery(String query) {
+    public void enterSearchQuery(String query) {
         WebElement searchField = driver.findElement(SearchLocators.SEARCH_FIELD);
         searchField.sendKeys(query);
     }
@@ -32,16 +38,17 @@ public class SearchPage extends BasePage {
         return errorMessage.getText();
     }
 
-    public  List<String> getSearchResults() {
-        Duration timeout = Duration.ofSeconds(20);
-        WebDriverWait wait = new WebDriverWait(driver, timeout);
-        List<WebElement> searchResultElements = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(SearchLocators.SEARCH_RESULTS));
+    Duration timeout = Duration.ofSeconds(10);
 
+
+    public List<String> getSearchResults() {
+        WebDriverWait wait = new WebDriverWait(driver, timeout);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(SearchLocators.SEARCH_RESULTS));
+        List<WebElement> searchResultElements = driver.findElements(SearchLocators.SEARCH_RESULTS);
         return searchResultElements.stream()
                 .map(WebElement::getText)
-                .toList();
+                .collect(Collectors.toList());
     }
-
     public void enter(){
         driver.switchTo().activeElement().sendKeys(Keys.ENTER);
     }
