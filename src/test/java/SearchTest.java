@@ -2,7 +2,6 @@ import aua.testingfundamentals.pom.locators.SearchLocators;
 import aua.testingfundamentals.pom.pages.SearchPage;
 import base.BaseTest;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,7 +9,6 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 public class SearchTest extends BaseTest {
-
 
     @Test
     public void searchForProduct() {
@@ -31,25 +29,26 @@ public class SearchTest extends BaseTest {
         searchPage.performSearch();
         searchPage.enterSearchQuery("dcsjbncjnsdc");
         searchPage.getDriver().switchTo().activeElement().sendKeys(Keys.ENTER);
-        WebElement errorMessageElement = webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(SearchLocators.NO_RESULTS_MESSAGE));
 
+        webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(SearchLocators.NO_RESULTS_MESSAGE));
+        searchPage.getErrorMessage();
         Assert.assertEquals(searchPage.getErrorMessage(), "No results found");
     }
 
-
     @Test
-    public void searchForEmptyProductAnotherVersion() {
+    public void searchEmpty() {
         SearchPage searchPage = new SearchPage(driver, webDriverWait);
         String initialUrl = driver.getCurrentUrl();
         searchPage.performSearch();
         searchPage.enterSearchQuery("");
         searchPage.enter();
+
         webDriverWait.until(ExpectedConditions.not(ExpectedConditions.urlToBe(initialUrl)));
 
         String finalUrl = driver.getCurrentUrl();
-
         Assert.assertEquals(initialUrl, finalUrl, "URL has not changed after searching for an empty product");
     }
-//     // there is a bug because the url changed without any message.
+
+    //it should fail as I have found a bug here
 
 }

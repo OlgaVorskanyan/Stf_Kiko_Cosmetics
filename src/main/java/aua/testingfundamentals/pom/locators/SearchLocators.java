@@ -3,7 +3,7 @@ package aua.testingfundamentals.pom.locators;
 import org.openqa.selenium.By;
 
 public class SearchLocators {
-    public static final By ENABLE_SEARCH_FIELD = By.xpath("//button[@class='menu-mobile_button__S7e1L menu-mobile_searchButton__gj6DX']");
+    public static final By ENABLE_SEARCH_FIELD = By.cssSelector(".menu-mobile_button__S7e1L.menu-mobile_searchButton__gj6DX");
 
     public static final By SEARCH_FIELD = By.className("menu-mobile_searchInput__sjmP6");
 

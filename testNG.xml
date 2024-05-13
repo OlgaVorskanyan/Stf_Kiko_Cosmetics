@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Ordered Test Suite" preserve-order="true">
+
+
+    <test name="Search Test">
+        <classes>
+            <class name="SearchTest"/>
+        </classes>
+    </test>
+
+    <test name="Sort Test">
+        <classes>
+            <class name="SortTest"/>
+        </classes>
+    </test>
+
+    <test name="Add Basket Test">
+        <classes>
+            <class name="AddBasketTest"/>
+        </classes>
+    </test>
+</suite>

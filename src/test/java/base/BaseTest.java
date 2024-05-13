@@ -3,6 +3,8 @@ import aua.testingfundamentals.pom.base.BasePage;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,18 +27,23 @@ public abstract class BaseTest {
     protected WebDriver     driver;
     protected WebDriverWait webDriverWait;
 
+//    @BeforeMethod
+//    public void beforeClass() {
+//        driver = new ChromeDriver();
+//        driver.manage().window().maximize();
+//        webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(3));
+//        driver.get(BasePage.BASE_URL);
+//    }
+
     @BeforeMethod
-    public void beforeClass() throws Exception {
+    public void setupSuite() throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browserName", "chrome");
-
         URL hubUrl = new URL("http://localhost:4444/wd/hub");
         driver = new RemoteWebDriver(hubUrl, capabilities);
-
         driver.manage().window().maximize();
         webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.navigate().to(BasePage.BASE_URL);
-
     }
 
     @AfterMethod
@@ -51,7 +58,7 @@ public abstract class BaseTest {
                 throw new RuntimeException(e);
             }
         }
-        driver.close();
+        driver.quit();
 
     }
 
